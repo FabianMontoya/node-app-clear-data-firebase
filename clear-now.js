@@ -35,8 +35,8 @@ const createRecord = async (key, records) => {
   try {
     const database = getDatabase();
 
-    const newRecordRef = ref(database, '1/' + key);
-    const newRecordRef2 = ref(database, key + '/');
+    const newRecordRef = ref(database, `1/${key}`);
+    const newRecordRef2 = ref(database, key);
 
     // generar un numero de telefono que tenga 10 digitos y empiece por 3
     // const celular = faker.number.int({ min: 3000000000, max: 3999999999 }).toString();
@@ -79,12 +79,16 @@ const createRecord = async (key, records) => {
 const clearDB = async (hour, minute, records) => {
   console.log(`clearing data at: ${hour}:${minute}`);
 
+  const realMinuteFrom = minute > 2 ? minute - 2 : 0;
+
   for (let hora = hour; hora <= hour; hora++) {
-    for (let minuto = minute; minuto < minute + 2; minuto++) {
+    for (let minuto = realMinuteFrom; minuto < minute + 1; minuto++) {
       for (let segundo = 0; segundo < 60; segundo++) {
         const key = `${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}:${segundo
           .toString()
           .padStart(2, '0')}`;
+
+        // console.log(`clearing data at: ${key}`);
         createRecord(key, records);
       }
     }

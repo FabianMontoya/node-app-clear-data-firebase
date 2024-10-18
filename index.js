@@ -37,6 +37,8 @@ const getRecord = async (key) => {
   const keyInternalRef = ref(database, `1/${key}`);
   const keyGlobalRef = ref(database, `${key}/`);
 
+  console.log(key);
+
   const internalRef = await get(keyInternalRef);
   if (internalRef.exists()) {
     console.log('keyInternalRef', internalRef.val());
@@ -55,7 +57,7 @@ const getRecord = async (key) => {
 
 const main = async () => {
   try {
-    await getRecord('14:11:48');
+    await getRecord('23:13:59');
   } catch (error) {
     console.error('Ocurrió un error:', error);
   } finally {
