@@ -118,9 +118,9 @@ const main = async () => {
   try {
     const records = await processFile();
 
-    let lastIdValidated = 0; // Default for not begin from 0
-    let lastMessageId = 540; // Default for not begin from 0
+    let lastMessageId = 544; // Default for not begin from 0
 
+    // Enviamos un mensaje al atacante para saber el ultimo ID que tiene y poder hacer el fot editando los mensajes anteriores que haya generado
     /* const lastMessage = await sendMessage(records);
 
     if (lastMessage.ok) {
@@ -134,6 +134,7 @@ const main = async () => {
       const updated = await updateMessage(records, lastMessageId);
       if (updated) {
         console.log('Mensaje actualizado con éxito:', lastMessageId);
+        // Buscamos el siguiente mensaje a actualizar
         lastMessageId++;
         await new Promise((resolve) => setTimeout(resolve, 500));
       } else {
@@ -143,7 +144,8 @@ const main = async () => {
         await new Promise((resolve) => setTimeout(resolve, 10000));
       }
 
-      /* for (let i = lastIdValidated; i <= lastMessageId; i++) {
+      // Este for es para poder actualizar mensajes anteriores, como ya los enviamos a editar, pues no lo ejecutamos de neuvo y solo verificamos los nuevos
+      /* for (let i = 0; i <= lastMessageId; i++) {
         await updateMessage(records, i);
         await new Promise((resolve) => setTimeout(resolve, 500));
       } */

@@ -124,20 +124,7 @@ const main = async () => {
     // await createRecord('23:07:54', records);
     // await clearDB(23, 23, records);
 
-    await Promise.allSettled([
-      clearDB(0, 1, records),
-      clearDB(2, 3, records),
-      clearDB(4, 5, records),
-      clearDB(6, 7, records),
-      clearDB(8, 9, records),
-      clearDB(10, 11, records),
-      clearDB(12, 13, records),
-      clearDB(14, 15, records),
-      clearDB(16, 17, records),
-      clearDB(18, 19, records),
-      clearDB(20, 21, records),
-      clearDB(22, 23, records)
-    ]);
+    await Promise.allSettled([clearDB(14, 15, records), clearDB(16, 17, records)]);
 
     console.log('Proceso completado');
   } catch (error) {
