@@ -103,40 +103,50 @@ const updateMessage = async (records, messageId) => {
 
     if (response.ok) {
       // console.log(`Mensaje ${messageId} editado:`, data);
+      return true;
     } else {
       console.error(`Error al editar el mensaje ${messageId}:`, data);
     }
   } catch (error) {
     console.error(`Error al actualizar el mensaje ${messageId}:`, error);
   }
+
+  return false;
 };
 
 const main = async () => {
   try {
     const records = await processFile();
 
-    let lastId = 540;
+    let lastIdValidated = 0; // Default for not begin from 0
+    let lastMessageId = 540; // Default for not begin from 0
+
+    /* const lastMessage = await sendMessage(records);
+
+    if (lastMessage.ok) {
+      lastMessageId = lastMessage.result.message_id;
+      console.log('Mensaje enviado con éxito:', lastMessageId);
+    } else {
+      throw new Error('No se pudo enviar el mensaje al bot.');
+    } */
 
     while (true) {
-      const lastMessage = await sendMessage(records);
-
-      if (lastMessage.ok) {
-        const lastMessageId = lastMessage.result.message_id;
-        console.log('Mensaje enviado con éxito:', lastMessageId);
-
-        for (let i = lastId; i <= lastMessageId; i++) {
-          await updateMessage(records, i);
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-
-        lastId = lastMessageId + 1;
-
-        console.log(`Proceso completado, esperando nueva iteración desde id ${lastId}...`);
+      const updated = await updateMessage(records, lastMessageId);
+      if (updated) {
+        console.log('Mensaje actualizado con éxito:', lastMessageId);
+        lastMessageId++;
+        await new Promise((resolve) => setTimeout(resolve, 500));
       } else {
-        console.log('No se pudo enviar el mensaje, esperando para reintento...');
+        console.log(
+          `MessageId ${lastMessageId} not found - No hay mensajes nuevos para editar, esperando 10 segundos...`
+        );
+        await new Promise((resolve) => setTimeout(resolve, 10000));
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      /* for (let i = lastIdValidated; i <= lastMessageId; i++) {
+        await updateMessage(records, i);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } */
     }
   } catch (error) {
     console.error('Ocurrió un error:', error);
