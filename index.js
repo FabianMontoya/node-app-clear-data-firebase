@@ -16,9 +16,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const database = getDatabase();
-
-const __dirname = new URL('.', import.meta.url).pathname;
+/* const __dirname = new URL('.', import.meta.url).pathname;
 
 const processFile = async () => {
   const records = [];
@@ -32,84 +30,36 @@ const processFile = async () => {
   return records;
 };
 
-const records = await processFile();
-console.log(records.length);
+const records = await processFile(); */
 
-const starCountRef = ref(database, '23:20:03/');
+const getRecord = async (key) => {
+  const database = getDatabase();
+  const keyInternalRef = ref(database, `1/${key}`);
+  const keyGlobalRef = ref(database, `${key}/`);
 
-/* const dbRef = ref(getDatabase());
-get(child(dbRef, `1/`))
-  .then((snapshot) => {
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-    } else {
-      console.log('No data available');
-    }
-  })
-  .catch((error) => {
-    console.error(error);
-  });
- */
+  const internalRef = await get(keyInternalRef);
+  if (internalRef.exists()) {
+    console.log('keyInternalRef', internalRef.val());
+  } else {
+    console.log('No data available for keyInternalRef' + `1/${key}`);
+  }
 
-onValue(starCountRef, (snapshot) => {
-  const data = snapshot.val();
-  console.log({ snapshot, data });
-  // updateStarCount(postElement, data);
-});
+  const globalRef = await get(keyGlobalRef);
 
-const createRecord = async (key) => {
-  const newRecordRef = ref(database, '1/' + key);
-
-  const celular = faker.phone.phoneNumber('3#########');
-  const record = {
-    celular: celular,
-    clave: Math.random().toString(36).substring(2, 6), // Genera una clave aleatoria
-    clienteid: key,
-    color: faker.helpers.arrayElement(['intermitente', 'entrando', 'verde']), // Status
-    corro: faker.internet.email(), // Correo aleatorio
-    sectionVisible: faker.helpers.arrayElement(['espera', 'Dinamica_APP', 'Terminado']), // Sección visible aleatoria
-    tera: faker.helpers.arrayElement(['NEQUI', 'TRICOLOR', 'Tarjeta']), // Servicio aleatorio
-    usuario: celular // Usa el celular como parte del usuario
-  };
-
-  await set(newRecordRef, record);
-};
-
-const updateRecord = async (key) => {
-  const recordRef = ref(database, '1/' + key);
-
-  // get random record from file
-
-  const data = records[Math.floor(Math.random() * records.length)];
-  const celular = data.number;
-
-  const record = {
-    celular: celular,
-    clave: Math.random().toString(36).substring(2, 6), // Genera una clave aleatoria
-    clienteid: key,
-    color: faker.helpers.arrayElement(['intermitente', 'entrando', 'verde']), // Status
-    corro: faker.internet.email(), // Correo aleatorio
-    sectionVisible: faker.helpers.arrayElement(['espera', 'Dinamica_APP', 'Terminado']), // Sección visible aleatoria
-    tera: faker.helpers.arrayElement(['NEQUI', 'TRICOLOR', 'Tarjeta']), // Servicio aleatorio
-    usuario: celular // Usa el celular como parte del usuario
-  };
-
-  console.log(`actualizando registro ${key}`, { record });
-
-  await update(recordRef, record);
-};
-
-const clearDB = async () => {
-  for (let hora = 6; hora < 12; hora++) {
-    for (let minuto = 0; minuto < 60; minuto++) {
-      for (let segundo = 0; segundo < 60; segundo++) {
-        const key = `${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}:${segundo
-          .toString()
-          .padStart(2, '0')}`;
-        updateRecord(key);
-      }
-    }
+  if (globalRef.exists()) {
+    console.log('keyGlobalRef', globalRef.val());
+  } else {
+    console.log('No data available for keyGlobalRef' + `${key}/`);
   }
 };
 
-// clearDB();
+const main = async () => {
+  try {
+    await getRecord('14:11:48');
+  } catch (error) {
+    console.error('Ocurrió un error:', error);
+  } finally {
+    process.exit(); // Cierra el proceso cuando termina
+  }
+};
+main();

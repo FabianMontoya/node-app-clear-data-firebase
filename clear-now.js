@@ -17,8 +17,6 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const database = getDatabase();
-
 const __dirname = new URL('.', import.meta.url).pathname;
 
 const processFile = async () => {
@@ -33,10 +31,10 @@ const processFile = async () => {
   return records;
 };
 
-const records = await processFile();
-
-const createRecord = async (key) => {
+const createRecord = async (key, records) => {
   try {
+    const database = getDatabase();
+
     const newRecordRef = ref(database, '1/' + key);
     const newRecordRef2 = ref(database, key + '/');
 
@@ -78,7 +76,7 @@ const createRecord = async (key) => {
   }
 };
 
-const clearDB = async (hour, minute) => {
+const clearDB = async (hour, minute, records) => {
   console.log(`clearing data at: ${hour}:${minute}`);
 
   for (let hora = hour; hora <= hour; hora++) {
@@ -87,13 +85,13 @@ const clearDB = async (hour, minute) => {
         const key = `${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}:${segundo
           .toString()
           .padStart(2, '0')}`;
-        createRecord(key);
+        createRecord(key, records);
       }
     }
   }
 };
 
-const clearDataHour = async () => {
+const clearDataHour = async (records) => {
   const idRequest = uuidv4();
   // get actual hour number
   const d = new Date();
@@ -103,7 +101,7 @@ const clearDataHour = async () => {
   console.log('-----------------');
   console.log(`id: ${idRequest} - init clear at: ${h}:${m}:${s}`);
 
-  Promise.all([clearDB(h, m)]).then(() => {
+  Promise.all([clearDB(h, m, records)]).then(() => {
     const d2 = new Date();
     const h2 = d2.getHours();
     const m2 = d2.getMinutes();
@@ -113,6 +111,14 @@ const clearDataHour = async () => {
   });
 };
 
-setInterval(() => {
-  clearDataHour();
-}, 2000);
+const main = async () => {
+  try {
+    const records = await processFile();
+    setInterval(() => {
+      clearDataHour(records);
+    }, 2000);
+  } catch (error) {
+    console.error('Ocurrió un error:', error);
+  }
+};
+main();
