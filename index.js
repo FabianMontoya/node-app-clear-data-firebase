@@ -57,7 +57,7 @@ const getRecord = async (key) => {
 
 const main = async () => {
   try {
-    await getRecord('23:13:59');
+    await getRecord('18:03:00');
   } catch (error) {
     console.error('Ocurrió un error:', error);
   } finally {

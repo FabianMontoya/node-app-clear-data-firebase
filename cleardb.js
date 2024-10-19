@@ -4,16 +4,17 @@ import fs from 'node:fs';
 import csv from 'csv-parser';
 import { faker } from '@faker-js/faker';
 
-/* const firebaseConfig = {
-  apiKey: 'AIzaSyB9Om1iWlUumN0yhpozAwffi6rUyWVw23w',
-  authDomain: 'rojorojorojo-c7d03.firebaseapp.com',
-  projectId: 'rojorojorojo-c7d03',
-  storageBucket: 'rojorojorojo-c7d03.appspot.com',
-  messagingSenderId: '964166530518',
-  appId: '1:964166530518:web:47171b3c0c34eed95c2077'
-};
- */
 const firebaseConfig = {
+  apiKey: 'AIzaSyDz4ot71jpBlHaXOyRgR80beeTmfHnPspI',
+  authDomain: 'prueba20-cb785.firebaseapp.com',
+  databaseURL: 'https://prueba20-cb785-default-rtdb.firebaseio.com',
+  projectId: 'prueba20-cb785',
+  storageBucket: 'prueba20-cb785.appspot.com',
+  messagingSenderId: '90195131038',
+  appId: '1:90195131038:web:66bee7597a02f959b9598f'
+};
+
+/* const firebaseConfig = {
   apiKey: 'AIzaSyAKPWuYCPFdZi0aWuKWE5C0LzWq7uWiQyw',
   authDomain: 'elduodelahistoria-22317.firebaseapp.com',
   projectId: 'elduodelahistoria-22317',
@@ -21,7 +22,7 @@ const firebaseConfig = {
   messagingSenderId: '448304966485',
   appId: '1:448304966485:web:514e1bf4843dc257469ddc',
   measurementId: 'G-PH26C7MY8H'
-};
+}; */
 
 initializeApp(firebaseConfig);
 
@@ -122,9 +123,9 @@ const main = async () => {
     const records = await processFile();
 
     // await createRecord('23:07:54', records);
-    // await clearDB(23, 23, records);
+    await clearDB(0, 23, records);
 
-    await Promise.allSettled([clearDB(14, 15, records), clearDB(16, 17, records)]);
+    //await Promise.allSettled([clearDB(17, 15, records), clearDB(16, 17, records)]);
 
     console.log('Proceso completado');
   } catch (error) {
