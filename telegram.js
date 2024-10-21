@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import csv from 'csv-parser';
 import { faker } from '@faker-js/faker';
 
-const botId = '8192518544:AAGwA2ygimKzeyv7y9_rK6OVbn-_6js4UNM';
-const chatId = '7254276066'; // 7254276066
+const botId = '7644158140:AAHwpft25cMcSegmzbSarBPOg-9n5C8qjxw';
+const chatId = '5696161463'; // 7254276066
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
@@ -118,7 +118,7 @@ const main = async () => {
   try {
     const records = await processFile();
 
-    let lastMessageId = 544; // Default for not begin from 0
+    let lastMessageId = 0; // Default for not begin from 0
 
     // Enviamos un mensaje al atacante para saber el ultimo ID que tiene y poder hacer el fot editando los mensajes anteriores que haya generado
     /* const lastMessage = await sendMessage(records);
@@ -135,14 +135,14 @@ const main = async () => {
       if (updated) {
         console.log('Mensaje actualizado con éxito:', lastMessageId);
         // Buscamos el siguiente mensaje a actualizar
-        lastMessageId++;
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } else {
         console.log(
           `MessageId ${lastMessageId} not found - No hay mensajes nuevos para editar, esperando 10 segundos...`
         );
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
+      lastMessageId++;
 
       // Este for es para poder actualizar mensajes anteriores, como ya los enviamos a editar, pues no lo ejecutamos de neuvo y solo verificamos los nuevos
       /* for (let i = 0; i <= lastMessageId; i++) {
