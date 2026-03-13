@@ -31,4 +31,4 @@ Se encontró que tambien enviaban los datos capturados a un chat de telegram, as
 Recuerden que la seguridad en internet la hacemos todos.
 
 ## Agradecimientos
-Con cariño: fmontoya.
+Con cariño: [fmontoya](https://fmontoya.dev).
