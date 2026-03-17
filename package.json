@@ -12,7 +12,7 @@
   "dependencies": {
     "csv-parse": "^6.1.0",
     "csv-parser": "^3.0.0",
-    "firebase": "^10.14.1",
+    "firebase": "^12.10.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
